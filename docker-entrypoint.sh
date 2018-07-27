@@ -14,7 +14,6 @@ function yarn_install {
 
 if [ -d ".git" ]; then
     SHA=$(git rev-parse HEAD)
-    rm -rf .git/
 else
     echo "Unable to determine SHA, failing."
     exit 1
@@ -87,6 +86,9 @@ if [ "$RETVAL" -gt "0" ]; then
 fi
 
 yarn_install
+
+# Remove git repository
+rm -rf .git/
 
 # manifest expects tar to uncompress to a folder called site - required for bc
 cd ../
