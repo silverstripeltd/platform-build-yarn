@@ -29,8 +29,7 @@ else
     mkdir -p ~/.ssh
     echo "${IDENT_KEY}" > ~/.ssh/id_rsa
     chmod 0600 ~/.ssh/id_rsa
-    FINGER_PRINT=$(ssh-keygen -E md5 -lf ~/.ssh/id_rsa | awk '{ print $2 }' | cut -c 5-)
-    echo "Using deploy key ${FINGER_PRINT}"
+    echo "Using deploy key"
 fi
 
 export COMPOSER_PROCESS_TIMEOUT=1200
