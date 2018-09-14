@@ -3,11 +3,25 @@ set -e
 
 source /funcs.sh
 
-function yarn_install {
-	echo "Running: Yarn Dependency Installation"
-	yarn --no-progress --non-interactive
+function nvm_switch {
+	if [[ -f ".nvmrc" ]]; then
+		echo "Running: Apply NVM Configuration"
+		. /root/.nvm/nvm.sh
+		nvm use
+		which node
+	fi
+}
 
-	echo "Running: Webpack Production Build"
+function yarn_install {
+	if [[ -f "yarn.lock" ]]; then
+		echo "Running: Yarn Dependency Installation"
+		yarn --no-progress --non-interactive
+	else
+		echo "Running: NPM Dependency Installation"
+		npm install
+	fi
+
+	echo "Running: Production Build Task"
 	yarn run --no-progress --non-interactive production
 
 	echo "Running: Purge Node Modules"
@@ -33,6 +47,8 @@ fi
 composer_install
 
 vendor_expose
+
+nvm_switch
 
 yarn_install
 
