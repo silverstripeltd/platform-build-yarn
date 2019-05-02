@@ -44,11 +44,9 @@ else
     echo "Using deploy key"
 fi
 
-if [[ -f composer.json ]]; then
-    composer_install
+composer_install
 
-    vendor_expose
-fi
+vendor_expose
 
 if [[ -f package.json ]]; then
     nvm_switch
