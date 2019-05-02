@@ -16,7 +16,7 @@ RUN composer global require silverstripe/vendor-plugin-helper
 # NVM
 ENV NVM_DIR=/root/.nvm
 RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
-RUN . /root/.nvm/nvm.sh && nvm install v8 && nvm install v6
+RUN . /root/.nvm/nvm.sh && nvm install v6 && nvm install v8 && nvm install v10
 
 COPY --from=build /funcs.sh /funcs.sh
 COPY docker-entrypoint.sh /docker-entrypoint.sh
