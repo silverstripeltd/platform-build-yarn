@@ -1,19 +1,21 @@
 # Platform Build Yarn
 
-Compacts a SilverStripe source code into a deployable state with composer
+Transforms a SilverStripe source code into a deployable state with Composer and Node
 
 This image is different from [silverstripeltd/platform-build](https://github.com/silverstripeltd/platform-build) in that it runs `yarn` and `yarn run` as well as composer. 
 
 
 ## What is this?
 
-This is a docker container that runs three commands:
+This is a docker container that runs multiple commands:
 
- - composer validate
- - composer install --no-progress --prefer-dist --no-dev --ignore-platform-reqs --optimize-autoloader --no-interaction --no-suggest
- - The silverstripe [vendor plugin](https://github.com/silverstripe/vendor-plugin-helper) `vendor-plugin-helper copy ./`
- - `yarn`
- - `yarn run`
+ - If a `composer.json` file is present:
+   - composer validate
+   - composer install --no-progress --prefer-dist --no-dev --ignore-platform-reqs --optimize-autoloader --no-interaction --no-suggest
+   - The silverstripe [vendor plugin](https://github.com/silverstripe/vendor-plugin-helper) `vendor-plugin-helper copy ./`
+ - If a `package.json` file is present:
+   - `yarn` or `npm install` (based on the presence of a `yarn.lock` file)
+   - `yarn run production` or `npm run production`
 
 ## Example usage
 
