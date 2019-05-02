@@ -44,12 +44,16 @@ else
     echo "Using deploy key"
 fi
 
-composer_install
+if [[ -f composer.json ]]; then
+    composer_install
 
-vendor_expose
+    vendor_expose
+fi
 
-nvm_switch
+if [[ -f package.json ]]; then
+    nvm_switch
 
-yarn_install
+    yarn_install
+fi
 
 package_source ${SHA}
