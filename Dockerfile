@@ -2,7 +2,7 @@ FROM silverstripe/platform-build:1.0.2 AS build
 
 FROM stojg/node:8.1@sha256:fe45a08e0222a366125b73af3d71fdb741a2122221e5ef5f6f6d8b93de8d02e7
 
-RUN apt-get update && apt-get install -y curl php5-cli git
+RUN apt-get update && apt-get install -y curl php5-cli git jq
 
 RUN mkdir -p ~/.ssh
 RUN chmod 0700 ~/.ssh

@@ -22,7 +22,7 @@ function yarn_install {
 	fi
 
 	echo "Running: Production Build Task"
-	yarn run --no-progress --non-interactive production
+	yarn run --no-progress --non-interactive scp-build
 
 	echo "Running: Purge Node Modules"
 	rm -rf node_modules/
@@ -48,7 +48,8 @@ composer_install
 
 vendor_expose
 
-if [[ -f package.json ]]; then
+# Only run the front-end build steps if the scp-build command is defined
+if [[ -f package.json && "`cat package.json | jq '.scripts["scp-build"]?'`" != "null" ]]; then
     nvm_switch
 
     yarn_install
