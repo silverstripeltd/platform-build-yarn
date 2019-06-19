@@ -12,23 +12,31 @@ function nvm_switch {
 	fi
 }
 
-function yarn_install {
+function npm_build {
 	if [[ -f "yarn.lock" ]]; then
 		echo "Running: Yarn Dependency Installation"
 		yarn --no-progress --non-interactive
+
+		echo "Running: Yarn Production Build Task"
+		yarn run --no-progress --non-interactive scp-build
 	else
 		echo "Running: NPM Dependency Installation"
 		npm install
-	fi
 
-	echo "Running: Production Build Task"
-	yarn run --no-progress --non-interactive scp-build
+		echo "Running: NPM Production Build Task"
+		npm run --no-progress --non-interactive scp-build
+	fi
 
 	echo "Running: Purge Node Modules"
 	rm -rf node_modules/
 }
 
-if [ -d ".git" ]; then
+function composer_build {
+	echo "Running: Composer Production Build Task"
+	composer run-script scp-build
+}
+
+if [[ -d ".git" ]]; then
     SHA=$(git rev-parse HEAD)
 else
     echo "Unable to determine SHA, failing."
@@ -48,11 +56,16 @@ composer_install
 
 vendor_expose
 
-# Only run the front-end build steps if the scp-build command is defined
+# Run NPM/Yarn build script if the scp-build command is defined
 if [[ -f package.json && "`cat package.json | jq '.scripts["scp-build"]?'`" != "null" ]]; then
     nvm_switch
 
-    yarn_install
+    npm_build
+fi
+
+# Run Composer build script if the scp-build command is defined
+if [[ -f composer.json && "`cat composer.json | jq '.scripts["scp-build"]?'`" != "null" ]]; then
+	composer_build
 fi
 
 package_source ${SHA}
